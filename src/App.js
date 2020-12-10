@@ -1,25 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import Header from './components/Header';
+import RegisterForm from './components/RegisterForm';
+import AuthForm from './components/AuthForm';
+import Container from './components/Ui/Container/Container';
+import Home from './pages/Home';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    const [currentUser, setCurrentUser] = useState({
+        auth: false,
+        name: null
+    });
+
+    return (
+        <>  
+            <Header 
+                name={currentUser.name}
+                auth={currentUser.auth}
+                setCurrentUser={setCurrentUser}
+            />
+            {currentUser.auth ?
+                <Router>
+                    <Route exact path='/' component={Home}/>
+                </Router>
+                :
+                <Router>
+                    <Route exact path='/'>
+                        <Container
+                            display='flex'
+                            justify='space-around'
+                            marginTop='20px'
+                        >
+                            <RegisterForm 
+                                currentUser={currentUser}
+                                setCurrentUser={setCurrentUser}
+                            />
+                            <AuthForm 
+                                currentUser={currentUser}
+                                setCurrentUser={setCurrentUser}
+                            />
+                        </Container>
+                    </Route>  
+                </Router>
+            }    
+        </>
+    )
+};
 
 export default App;
