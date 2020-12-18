@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import React, {useState, useEffect} from 'react';
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import Header from './components/Header';
 import RegisterForm from './components/RegisterForm';
 import AuthForm from './components/AuthForm';
@@ -11,6 +11,12 @@ const App = () => {
         auth: false,
         name: null
     });
+
+    useEffect(() => {
+        if (currentUser.auth) {
+            return <Redirect to="/" />
+          }
+    }, [currentUser]);
 
     return (
         <>  

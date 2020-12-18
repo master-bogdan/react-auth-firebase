@@ -4,27 +4,18 @@ import { RegisterButton } from '../Ui/Buttons/Buttons';
 import { Form, FormTitle, Label, Span, Input } from './styles';
 import { signInWithGoogle, auth } from '../../firebase/config';
 
-const AuthForm = ({currentUser, setCurrentUser}) => {
+const AuthForm = ({ setCurrentUser }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const { email, password } = e.target.elements;
-        try {
-          auth.signInWithEmailAndPassword(email.value, password.value)
-          .catch(error => alert(error))
-          .then(alert(`Welcome ${email.value.trim()}`));
-          setCurrentUser({ 
-            auth: true, 
-            name: email.value.trim()
-        });
-        } catch (error) {
-          alert(error);
-        }
-      };
-
-      if (currentUser.auth) {
-        return <Redirect to="/" />
-      }
+        auth.signInWithEmailAndPassword(email.value, password.value)
+        .then((user) => setCurrentUser({
+            auth: true,
+            name: user.user.email
+        }))
+        .catch((error) => alert(error))
+    };
 
     return (
         <Form onSubmit={handleSubmit}>
